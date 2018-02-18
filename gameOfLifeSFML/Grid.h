@@ -22,7 +22,7 @@ public:
 		:size(game.gridSize), game(game)
 	{
 		cells.resize(size.x, vector<Cell>());
-		nextCellState.resize(size.x, vector<bool>(size.y));
+		nextCellState.resize(size.x, vector<bool>(size.y, false));
 		
 		for (int x = 0; x < size.x; x++) 
 			for (int y = 0; y < size.y; y++ ) {
@@ -38,38 +38,46 @@ public:
 			}
 	}
 	
-	void update(sf::RenderWindow& window)
+	void update(sf::RenderWindow& window, sf::Clock& time)
 	{
 		for (int x = 0; x < size.x; x++)
 			for (int y = 0; y < size.y; y++) {
 				cells[x][y].update(window); 
-				if (cells[x][y].isAlive) std::cout << "is alive!!";
+				
 			}
 		
-		for (int x = 0; x < size.x; x++)
+		sf::Time elapsed = time.getElapsedTime(); 
+		sf::Int32 msec = elapsed.asMilliseconds();
+		
+		if (msec >= 75)
 		{
-			for (int y = 0; y < size.y; y++)
+			for (int x = 0; x < size.x; x++)
 			{
-				bool living = cells[x][y].isAlive; 
-				int count = getLivingNeighbors(x, y);
-				bool result = false;
+				for (int y = 0; y < size.y; y++)
+				{
+					bool living = cells[x][y].isAlive;
+					int count = getLivingNeighbors(x, y);
+					bool result = false;
 
-				
-				if (living && count < 2)
-					result = false;
-				if (living && (count == 2 || count == 3))
-					result = true;
-				if (living && count > 3)
-					result = false;
-				if (!living && count == 3)
-					result = true;  
-				
 
-				nextCellState[x][y] = result;
+					if (living && count < 2)
+						result = false;
+					if (living && (count == 2 || count == 3))
+						result = true;
+					if (living && count > 3)
+						result = false;
+					if (!living && count == 3)
+						result = true;
+
+
+					nextCellState[x][y] = result;
+				}
 			}
-		} 
 
-		setNextState();
+			setNextState(); 
+			time.restart();
+		}
+	
 	} 
 
 	int getLivingNeighbors(int x, int y)

@@ -19,12 +19,18 @@ void Cell::update(sf::RenderWindow& window)
 {
 	if (bounds.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window))))
 	{
-		//std::cout << "The mouse is in bounds!";
-		isAlive = true;
-		/*if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-			isAlive = true;
-		else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-			isAlive = false;*/
+		
+		
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+			//std::cout << position.x << position.y; 
+			isAlive = true; 
+			
+		}
+		else if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
+			isAlive = false; 
+			
+		}
+			
 
 	}
 }
@@ -32,8 +38,10 @@ void Cell::update(sf::RenderWindow& window)
 void Cell::draw(sf::RenderWindow& window)
 {
 	if (isAlive) {
-		bounds.setFillColor(sf::Color::Blue); 
-		std::cout << "drawing!";
+		bounds.setFillColor(sf::Color::Black); 
+	} 
+	else {
+		bounds.setFillColor(sf::Color::White);
 	}
 		
 		

@@ -15,6 +15,9 @@ int main()
 	
 	sf::RenderWindow window(sf::VideoMode(game.width, game.height), "Game of life");
 	
+	window.setFramerateLimit(60);
+	sf::Clock clock;
+	Grid grid(game);
 	while (window.isOpen())
 	{
 		sf::Event event; 
@@ -26,11 +29,13 @@ int main()
 				window.close();
 		} 
 
-		Grid grid(game); 
+		
 		
 		window.clear(sf::Color::White); 
 
-		grid.update(window);
+		
+		
+		grid.update(window, clock);
 		grid.draw(window); 
 		
 
